@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B07BDC3C-3770-4A07-90D8-5C2A68E2172B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DairoshiMod</RootNamespace>
+    <AssemblyName>DairoshiMod</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>.\</OutputPath>
+    <BaseIntermediateOutputPath>build\obj</BaseIntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>.\</OutputPath>
+    <BaseIntermediateOutputPath>build\obj</BaseIntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DuckGame">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Duck Game\DuckGame.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\AirStrike.cs" />
+    <Compile Include="src\AtomicBomb.cs" />
+    <Compile Include="src\BackgroundDairoshi.cs" />
+    <Compile Include="src\BananaGun.cs" />
+    <Compile Include="src\Baseball.cs" />
+    <Compile Include="src\BaseballBat.cs" />
+    <Compile Include="src\Bouncer.cs" />
+    <Compile Include="src\CampingGrenade.cs" />
+    <Compile Include="src\Canister.cs" />
+    <Compile Include="src\Dematerializer.cs" />
+    <Compile Include="src\DemonicBook.cs" />
+    <Compile Include="src\DesertEagle.cs" />
+    <Compile Include="src\Destroyer.cs" />
+    <Compile Include="src\EvilEye.cs" />
+    <Compile Include="src\Famas.cs" />
+    <Compile Include="src\FNP90PDW.cs" />
+    <Compile Include="src\GangstaSMG.cs" />
+    <Compile Include="src\GarandWithBagnet.cs" />
+    <Compile Include="src\Gunerang.cs" />
+    <Compile Include="src\HairDryer.cs" />
+    <Compile Include="src\IceMaker.cs" />
+    <Compile Include="src\JackHammer.cs" />
+    <Compile Include="src\Kamikaze.cs" />
+    <Compile Include="src\Kunai.cs" />
+    <Compile Include="src\Lascurve.cs" />
+    <Compile Include="src\Laserose.cs" />
+    <Compile Include="src\Laseround.cs" />
+    <Compile Include="src\LaserRifleII.cs" />
+    <Compile Include="src\LaserTrapper.cs" />
+    <Compile Include="src\LMG.cs" />
+    <Compile Include="src\Magnum69420.cs" />
+    <Compile Include="src\MagRifle.cs" />
+    <Compile Include="src\Mauser.cs" />
+    <Compile Include="src\MGG.cs" />
+    <Compile Include="src\MicroGun.cs" />
+    <Compile Include="src\Mod.cs" />
+    <Compile Include="src\ModifiedFluid.cs" />
+    <Compile Include="src\Molotov.cs" />
+    <Compile Include="src\MSG.cs" />
+    <Compile Include="src\PackedGrenade.cs" />
+    <Compile Include="src\RicochetGun.cs" />
+    <Compile Include="src\RocketLauncher.cs" />
+    <Compile Include="src\Shuriken.cs" />
+    <Compile Include="src\SilencedPistol.cs" />
+    <Compile Include="src\Sneakers.cs" />
+    <Compile Include="src\Spear.cs" />
+    <Compile Include="src\TacticalShotgun.cs" />
+    <Compile Include="src\TinyLaser.cs" />
+    <Compile Include="src\ToyBlaster.cs" />
+    <Compile Include="src\ToyShotgun.cs" />
+    <Compile Include="src\Trapper.cs" />
+    <Compile Include="src\Vector.cs" />
+    <Compile Include="src\Weaponizer.cs" />
+    <Compile Include="src\XDDDDDDDDDDDD.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
