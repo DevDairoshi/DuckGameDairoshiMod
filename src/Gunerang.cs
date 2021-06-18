@@ -131,7 +131,7 @@ namespace DuckGame.DairoshiMod
                 _destroyed = true;
             }
 
-            if (with is Block)
+            if (with is Block || with is Spikes)
             {
                 Level.Add(SmallSmoke.New(x, y));
                 Level.Remove(this);

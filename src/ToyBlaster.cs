@@ -94,7 +94,7 @@ namespace DuckGame.DairoshiMod
             this.accuracy = 1f;
             this.penetration = 0.35f;
             this.bulletSpeed = 5f;
-            this.rangeVariation = 0.0f;
+            this.rangeVariation = 1.5f;
             this.speedVariation = 3.0f;
             this.range = 1000f;
             this.rebound = true;
@@ -126,14 +126,12 @@ namespace DuckGame.DairoshiMod
                 if (this.owner != null)
                     this.responsibleProfile = this.owner.responsibleProfile;
 
+                SFX.Play(GetPath("bounce"), 1f, Rando.Float(-0.1f, 0.1f));
                 this.Fondle(duck);
 
-                duck.Disarm(this);
-                duck.Swear();
-                duck.ApplyForce(new Vec2(this.hSpeed * 0.5f, -3f));
+                //duck.Disarm(this);
+                duck.ApplyForce(new Vec2(this.hSpeed * 0.8f, -4f));
                 duck.GoRagdoll();
-
-                SFX.Play(GetPath("bounce"), 1f, Rando.Float(-0.1f, 0.1f));
             }
         }
 

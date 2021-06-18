@@ -19,7 +19,7 @@
             
             ammo = 100;
             _fullAuto = true;
-            _fireWait = 0.3f;
+            _fireWait = 0.5f;
             _kickForce = 0f;
             _fireSound = GetPath("energy");
             _ammoType = new ATDematerializer();
@@ -33,8 +33,8 @@
 
         public override void Fire()
         {
-            this._ammoType.barrelAngleDegrees = Rando.Float(-30f, 30f);
-            this._ammoType.bulletThickness = Rando.Float(0.2f, 1f);
+            this._ammoType.barrelAngleDegrees = Rando.Float(-35f, 35f);
+            this._ammoType.bulletThickness = Rando.Float(0.5f, 1.5f);
             base.Fire();
         }
     }
@@ -44,13 +44,13 @@
         public ATDematerializer()
         {
             this.accuracy = 1f;
-            this.range = 100f;
-            this.rangeVariation = 50f;
+            this.range = 120f;
+            this.rangeVariation = 40f;
             this.penetration = 10f;
-            this.bulletSpeed = 40f;
-            this.speedVariation = 10f;
+            this.bulletSpeed = 30f;
+            this.speedVariation = 20f;
             this.bulletThickness = 1f;
-            this.affectedByGravity = true;
+            this.affectedByGravity = false;
             this.bulletType = typeof(EnergyBullet);
             this.flawlessPipeTravel = true;
         }

@@ -109,19 +109,16 @@ namespace DuckGame.DairoshiMod
                 _currentState = 1;
                 SFX.Play(GetPath("glug"), 1f, Rando.Float(-0.3f, 0.3f));
 
-                if (isServerForObject)
-                {
-                    FluidData fluid = Fluid.Gas;
-                    fluid.amount = 0.03f;
+                FluidData fluid = Fluid.Gas;
+                fluid.amount = 0.03f;
 
-                    for (int index = 0; index < 10; ++index)
-                    {
-                        var gas = new Fluid(this.barrelPosition.x, this.barrelPosition.y, new Vec2(0.0f, -1f), fluid);
-                        Level.Add((Thing) gas);
-                        this.Fondle(gas);
-                        gas._hSpeed = barrelVector.x * Rando.Float(3f);
-                        gas._vSpeed = barrelVector.y - 1f;
-                    }
+                for (int index = 0; index < 10; ++index)
+                {
+                    var gas = new Fluid(this.barrelPosition.x, this.barrelPosition.y, new Vec2(0.0f, -1f), fluid);
+                    Level.Add((Thing)gas);
+                    this.Fondle(gas);
+                    gas._hSpeed = barrelVector.x * Rando.Float(3f);
+                    gas._vSpeed = barrelVector.y - 1f;
                 }
             }
             else

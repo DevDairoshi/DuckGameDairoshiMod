@@ -25,7 +25,7 @@ namespace DuckGame.DairoshiMod
             collisionOffset = new Vec2(-17f, -4f);
             _barrelOffsetTL = new Vec2(34f, 2f);
             _holdOffset = new Vec2(6f, 0f);
-
+           
             wideBarrel = true;
             _manualLoad = true;
             _numBulletsPerFire = 8;
@@ -76,19 +76,21 @@ namespace DuckGame.DairoshiMod
                 {
                     _shot.Play(1f, Rando.Float(0.2f) - 0.1f);
                     
-                    ApplyKick();
                     this.loaded = false;
                     if (this.receivingPress || !this.isServerForObject)
                         return;
                     Vec2 vec2 = this.Offset(this.barrelOffset);
 
                     Dart dart = new Dart(vec2.x, vec2.y, this.owner as Duck, 0);
-                    dart.gravMultiplier *= 0.3f;
-                    dart.weight = 15f;
-                    dart.hMax = 99f;
-                    dart.vMax = 99f;
-
+                    Level.Add((Thing)dart);
                     this.Fondle((Thing)dart);
+
+                    dart.gravMultiplier *= 0.2f;
+                    dart.weight = 15f;
+                    dart.hMax = 80f;
+                    dart.vMax = 80f;
+
+
                     if (this.onFire)
                     {
                         Level.Add((Thing)SmallFire.New(0.0f, 0.0f, 0.0f, 0.0f, stick: ((MaterialThing)dart), firedFrom: ((Thing)this)));
@@ -97,7 +99,6 @@ namespace DuckGame.DairoshiMod
                     }
                     dart.hSpeed = barrelVector.x * 30f;
                     dart.vSpeed = barrelVector.y * 30f;
-                    Level.Add((Thing)dart);
                 }
                 else
                 {

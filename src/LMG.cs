@@ -23,6 +23,7 @@ namespace DuckGame.DairoshiMod
             _type = "gun";
             _kickForce = 1f;
             _fireSound = GetPath("destroyerShot");
+            _fireSoundPitch = 0.5f;
             editorTooltip = "Fast, lethal, laser machine gun.";
         }
     }

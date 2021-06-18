@@ -27,39 +27,11 @@ namespace DuckGame.DairoshiMod
             editorTooltip = "The bullet gonna bounce for quite a long time...";
         }
 
-        public override void Update()
-        {
-            base.Update();
-            if (_cooldown > 0f)
-            {
-                _cooldown -= 0.01f;
-            }
-            else
-            {
-                _cooldown = 0f;
-            }
-        }
-
-        public override void OnPressAction()
-        {
-            if (ammo > 0 && _cooldown == 0f)
-            {
-                _cooldown = 0.3f;
-                Fire();
-            }
-            else if (ammo == 0)
-            {
-                SFX.Play("click");
-            }
-            base.OnPressAction();
-        }
-
         public override void Fire()
         {
+            _ammoType.barrelAngleDegrees = Rando.Float(-15f, 15f);
             base.Fire();
         }
-
-        private float _cooldown;
     }
     
     public class ATBouncingGrenade : AmmoType
@@ -70,7 +42,7 @@ namespace DuckGame.DairoshiMod
             this.penetration = 0.35f;
             this.bulletSpeed = 5f;
             this.rangeVariation = 0.0f;
-            this.speedVariation = 0.0f;
+            this.speedVariation = 1.0f;
             this.range = 2000f;
             this.rebound = true;
             this.affectedByGravity = true;
@@ -81,8 +53,6 @@ namespace DuckGame.DairoshiMod
             this.bulletColor = Color.Red;
             this.bulletType = typeof(BouncingBullet);
             this.immediatelyDeadly = true;
-            //this.sprite = new Sprite(Thing.GetPath<Mod>("xd"));
-            //this.sprite.CenterOrigin();
             this.flawlessPipeTravel = true;
         }
 

@@ -67,7 +67,7 @@ namespace DuckGame.DairoshiMod
                         Graphics.FlashScreen();
                         if (this.isServerForObject)
                         {
-                            for (int index = 0; index < 30; ++index)
+                            for (int index = 0; index < 20; ++index)
                             {
                                 CampingBall ball = new CampingBall(this.x, this.y, this.duck);
                                 float speedx = Rando.Float(30f) - 15f;
@@ -75,16 +75,10 @@ namespace DuckGame.DairoshiMod
                                 ball.ApplyForce(new Vec2(speedx, speedy));
                                 Level.Add(ball);
                             }
-                            foreach (Window window in Level.CheckCircleAll<Window>(this.position, 40f))
-                            {
-                                if (Level.CheckLine<Block>(this.position, window.position, (Thing)window) == null)
-                                    window.Destroy((DestroyType)new DTImpact((Thing)this));
-                            }
                             this.bulletFireIndex += (byte)20;
                             if (Network.isActive)
                             {
                                 Send.Message((NetMessage)new NMFireGun((Gun)this, this.firedBullets, this.bulletFireIndex, false), NetMessagePriority.ReliableOrdered);
-
                                 this.firedBullets.Clear();
                             }
                         }

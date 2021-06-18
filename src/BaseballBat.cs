@@ -140,7 +140,7 @@ namespace DuckGame.DairoshiMod
 
                         this.Fondle(t);
 
-                        (t as Duck).Disarm(this);
+                        //(t as Duck).Disarm(this);
                         t.ApplyForce(RandomForce(offDir));
                         (t as Duck).GoRagdoll();
                         state = 2;
@@ -210,7 +210,7 @@ namespace DuckGame.DairoshiMod
 
         public Vec2 RandomForce(sbyte dir)
         {
-            return new Vec2(dir * Rando.Float(2f,8f), Rando.Float(-6f, -16f));
+            return new Vec2(dir * Rando.Float(2f,8f), Rando.Float(-16f, -6f));
         }
     }
 }

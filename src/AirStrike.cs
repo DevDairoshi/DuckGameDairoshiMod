@@ -50,7 +50,6 @@
                 _lastDuck = duck;
             }
 
-
             if (ammo < 2)
             {
                 _timer -= 0.01f;
@@ -59,19 +58,16 @@
             {
                 _dropSFX.Play(1.5f);
 
-                for (int i = -3; i < 4; i++)
+                for (int i = -4; i < 4; i++)
                 {
                     var bullet = new Bullet(_strikePos.x - 10f + i * 30f, _strikePos.y - 500f + i * 30f, new ATMissile(), -85f);
                     Level.Add(bullet);
 
                     this.Fondle(bullet);
 
-                    if (Network.isActive && this.isServerForObject)
-                    {
-                        this.firedBullets.Add(bullet);
-                        if (this._lastDuck != null && this._lastDuck.profile.connection != null)
-                            bullet.connection = this._lastDuck.profile.connection;
-                    }
+                    this.firedBullets.Add(bullet);
+                    if (this._lastDuck != null && this._lastDuck.profile.connection != null)
+                        bullet.connection = this._lastDuck.profile.connection;
 
                     bullet._hSpeed = 0f;
                     bullet._vSpeed = 10f;

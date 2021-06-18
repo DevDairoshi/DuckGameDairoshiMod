@@ -15,7 +15,7 @@
 
             this.loseAccuracy = 0.6f;
             _fullAuto = true;
-            this._fireWait = 0.4f;
+            this._fireWait = 0.6f;
             ammo = 60;
             _ammoType = (AmmoType)new ATVector();
             _type = "gun";
