@@ -41,7 +41,7 @@
 
         public override void OnPressAction()
         {
-            if (this.ammo > 0)
+            if (this.ammo > 0 && duck != null)
             {
                 --this.ammo;
                 SFX.Play(GetPath("summon"));
