@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 
 namespace DuckGame.DairoshiMod
 {
     [EditorGroup("DairoshiMod|Misc")]
     public class ToyBlaster : Gun
     {
+        public float _burnWait;
+        public bool burntOut;
         public sbyte _loadProgress = 100;
         public float _loadAnimation = 1f;
         protected SpriteMap _loaderSprite;
@@ -19,15 +22,18 @@ namespace DuckGame.DairoshiMod
             _barrelOffsetTL = new Vec2(32f, 7f);
             _holdOffset = new Vec2(1f, 0f);
 
+            flammable = 0.8f;
             wideBarrel = true;
             _manualLoad = true;
             ammo = 10;
             _type = "gun";
             _ammoType = (AmmoType)new ATToyBall();
             _ammoType.sprite = new Sprite(GetPath("toyBall"));
+
             _kickForce = 0f;
             _fireSound = GetPath("toy");
             editorTooltip = "Deez balls...";
+            physicsMaterial = PhysicsMaterial.Plastic;
 
             _loaderSprite = new SpriteMap(GetPath("toyLoader"), 10, 5);
             _loaderSprite.center = new Vec2(30f, 12.5f);
@@ -35,6 +41,15 @@ namespace DuckGame.DairoshiMod
 
         public override void Update()
         {
+            if (!this.burntOut && this.burnt >= 1f)
+            {
+                this.graphic = new Sprite(GetPath("toyBlasterBurnt"));
+                Vec2 smokePos = this.Offset(new Vec2(10f, 0f));
+                Level.Add(SmallSmoke.New(smokePos.x, smokePos.y));
+                this._onFire = false;
+                this.flammable = 0f;
+                this.burntOut = true;
+            }
             base.Update();
             if ((double)this._loadAnimation == -1.0)
             {
@@ -64,6 +79,12 @@ namespace DuckGame.DairoshiMod
         {
             if (this.loaded)
             {
+                if (this.burntOut && ammo > 0)
+                {
+                    SFX.Play("dartStick", 0.5f, -0.1f + Rando.Float(0.2f), 0f, false);
+                    return;
+                }
+
                 _ammoType.barrelAngleDegrees = Rando.Float(-15f, 15f);
                 base.OnPressAction();
                 this._loadProgress = (sbyte)-1;
@@ -75,6 +96,34 @@ namespace DuckGame.DairoshiMod
                     return;
                 this._loadProgress = (sbyte)0;
                 this._loadAnimation = -1f;
+            }
+        }
+
+        protected override bool OnBurn(Vec2 firePosition, Thing litBy)
+        {
+            base.onFire = true;
+            return true;
+        }
+
+        public override void UpdateFirePosition(SmallFire f)
+        {
+            f.position = this.Offset(barrelOffset);
+        }
+
+        public override void UpdateOnFire()
+        {
+            if (this.onFire)
+            {
+                _burnWait = _burnWait - 0.01f;
+                if (this._burnWait < 0f)
+                {
+                    Level.Add(SmallFire.New(22f, 0f, 0f, 0f, false, this, false, this, false));
+                    this._burnWait = 1f;
+                }
+                if (this.burnt < 1f)
+                {
+                    burnt = burnt + 0.001f;
+                }
             }
         }
 
@@ -103,6 +152,7 @@ namespace DuckGame.DairoshiMod
             this.weight = 10f;
             this.bulletThickness = 0f;
             this.bulletType = typeof(ToyBall);
+            this.combustable = true;
         }
     }
 
@@ -119,17 +169,19 @@ namespace DuckGame.DairoshiMod
             ammo.sprite.CenterOrigin();
         }
 
+
         protected override void OnHit(bool destroyed)
         {
-            foreach (Duck duck in Level.CheckCircleAll<Duck>(this.position, 30f))
+            foreach (Duck duck in Level.CheckCircleAll<Duck>(this.position, 15f))
             {
                 if (this.owner != null)
                     this.responsibleProfile = this.owner.responsibleProfile;
 
                 SFX.Play(GetPath("bounce"), 1f, Rando.Float(-0.1f, 0.1f));
                 this.Fondle(duck);
-
+                
                 //duck.Disarm(this);
+                duck.Swear();
                 duck.ApplyForce(new Vec2(this.hSpeed * 0.8f, -4f));
                 duck.GoRagdoll();
             }

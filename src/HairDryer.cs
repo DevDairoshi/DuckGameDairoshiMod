@@ -1,16 +1,15 @@
 ﻿using System;
-using DuckGame;
 
 namespace DuckGame.DairoshiMod
 {
     [EditorGroup("DairoshiMod|Misc")]
     public class HairDryer : Gun
     {
+        public StateBinding _powerStateBinding = new StateBinding("_power");
         public StateBinding _onStateBinding = new StateBinding("_on");
-        public StateBinding _cooldownStateBinding = new StateBinding("_cooldown");
-        public StateBinding _PowerStateBinding = new StateBinding("_power");
 
-        public HotAir _air;
+        public float _burnWait;
+        public bool burntOut;
 
         public HairDryer(float xval, float yval) : base(xval, yval)
         {
@@ -19,162 +18,224 @@ namespace DuckGame.DairoshiMod
             center = new Vec2(10.5f, 8.5f);
             collisionSize = new Vec2(21f, 17f);
             collisionOffset = new Vec2(-10.5f, -8.5f);
-            _barrelOffsetTL = new Vec2(30f, 3.5f);
+            _barrelOffsetTL = new Vec2(29f, 4f);
             _holdOffset = new Vec2(0f, 0f);
 
+            flammable = 0.8f;
             wideBarrel = true;
             ammo = 100;
             _type = "gun";
             _kickForce = 0f;
             _ammoType = (AmmoType)new ATDefault();
-            _fireSound = null;
+            _blow = new Sound(GetPath("blow"), 1f, 0f, 0f, true);
             editorTooltip = "Old hair dryer, legends say that it blows to hard.";
 
             physicsMaterial = PhysicsMaterial.Plastic;
-            _on = false;
-            _sound = new Sound(GetPath("blow"), 1f, 1f, 0f, true);
-            _power = -1f;
         }
 
-        public override void Terminate()
+        protected override void PlayFireSound()
         {
-            if (_air != null)
-                Level.Remove(_air);
-            base.Terminate();
+            SFX.Play(this._fireSound, 1f, _power, 0f, true);
         }
 
-        public override void CheckIfHoldObstructed()
+        public override void Update()
         {
-            if (owner != null)
-                duck.holdObstructed = false;
+            if (!this.burntOut && this.burnt >= 1f)
+            {
+                this.graphic = new Sprite(GetPath("dryerBurnt"));
+                Vec2 smokePos = this.Offset(new Vec2(10f, 0f));
+                Level.Add(SmallSmoke.New(smokePos.x, smokePos.y));
+                this._onFire = false;
+                this.flammable = 0f;
+                this.burntOut = true;
+                _on = false;
+            }
+
+            base.Update();
+
+            if (duck == null)
+            {
+                _on = false;
+            }
+
+            _blow.Pitch = _power;
+
+            if (_on)
+            {
+                _temp += 0.02f;
+
+                if (_temp > 10f)
+                {
+                    Burn(new Vec2(barrelOffset.x - 10, barrelOffset.y), this);
+                }
+
+                if (_power < 1f)
+                {
+                    _power += 0.02f;
+                }
+            }
+            else
+            {
+                _temp -= 0.014f;
+
+                if (_power > 0f)
+                {
+                    _power -= 0.04f;
+                }
+                else
+                {
+                    _blow.Stop();
+                }
+            }
+
+            if (_power > 0.2f)
+            {
+                Vec2 vec = Offset(barrelOffset);
+
+                if (onFire)
+                {
+                    if (Rando.Int(0, 100) == 5)
+                    {
+                        SmallFire fire = SmallFire.New(vec.x, vec.y + +Rando.Float(-3f, 3f),
+                            barrelVector.x * _power * 8f + Rando.Float(-3f, 3f) * _power,
+                            barrelVector.y * _power * 8f + Rando.Float(-3f, 3f) * _power
+                        );
+                        Level.Add(fire);
+                    }
+                    else
+                    {
+                        AddAir(vec);
+                    }
+                }
+                else
+                {
+                    AddAir(vec);
+                }
+            }
+        }
+
+        public void AddAir(Vec2 vec)
+        {
+            Air air = new Air(vec.x, vec.y + Rando.Float(-3f, 3f));
+            Level.Add(air);
+            this.Fondle(air);
+
+            air.hSpeed = barrelVector.x * _power * 8f + Rando.Float(-3f, 3f) * _power;
+            air.vSpeed = barrelVector.y * _power * 8f + Rando.Float(-3f, 3f) * _power;
+        }
+
+        protected override bool OnBurn(Vec2 firePosition, Thing litBy)
+        {
+            base.onFire = true;
+            return true;
+        }
+
+        public override void UpdateFirePosition(SmallFire f)
+        {
+            f.position = this.Offset(new Vec2(barrelOffset.x - 10, barrelOffset.y + 2));
+        }
+
+        public override void UpdateOnFire()
+        {
+            if (this.onFire)
+            {
+                _burnWait = _burnWait - 0.01f;
+                if (this._burnWait < 0f)
+                {
+                    Level.Add(SmallFire.New(22f, 0f, 0f, 0f, false, this, false, this, false));
+                    this._burnWait = 1f;
+                }
+                if (this.burnt < 1f)
+                {
+                    burnt = burnt + 0.001f;
+                }
+            }
         }
 
         public override void OnPressAction()
         {
-            if (ammo > 0)
+            if (!burntOut && !onFire)
             {
-                if (_air == null && isServerForObject)
+                if (!_on && _power <= 0f && duck != null)
                 {
-                    _air = new HotAir(x + (float)offDir * 32f, y, this);
-                    Level.Add(_air);
+                    SFX.Play(_clickSound);
+                    _blow.Play();
+                    _on = true;
+                    _power = 0.01f;
+                    return;
                 }
-                _on = true;
-                _sound.Play();
-            }
-            else
-                SFX.Play(_clickSound, 1f, 0.0f, 0.0f, false);
-        }
 
-        public override void OnReleaseAction()
-        {
-            _on = false;
-            _power += 0.2f;
-            base.OnReleaseAction();
-        }
-
-        public override void Update()
-        {
-            if (_cooldown > 0)
-                _cooldown -= 0.01f;
-
-            if (_on)
-            {
-                if (_cooldown < 0f)
+                if (_on && _power >= 1f)
                 {
-                    if (ammo == 0)
-                    {
-                        _on = false;
-                        SFX.Play(_clickSound, 1f, 0.0f, 0.0f, false);
-                    }
-                    else
-                    {
-                        ammo--;
-                    }
-                    _cooldown = 1f;
-                }
-                else
-                    _cooldown -= 0.01f;
+                    SFX.Play(_clickSound);
 
-                _power += 0.03f;
-                if (_power > 0.5f) _power = 0.5f;
-                _sound.Pitch = _power;
+                    _on = false;
+                    _power = 1.3f;
+                    return;
+                }
             }
             else
             {
-                _power -= 0.05f;
-                if (_power < -0.5f)
-                {
-                    _power = -0.5f;
-                    _sound.Stop();
-                }
-                _sound.Pitch = _power;
+                SFX.Play(_clickSound);
             }
-
-            base.Update();
         }
 
         public override void Fire()
         {
-            // do nothing
+            // empty
         }
 
-        public bool _on;
-        private float _cooldown;
-        private Sound _sound;
-        public float _power;
+        private bool _on;
+        private float _power;
+        private Sound _blow;
+        private float _temp;
     }
 
-    public class HotAir : MaterialThing
+    public class Air : PhysicsObject
     {
-        public StateBinding _dryerStateBinding = new StateBinding("_hd");
-        public StateBinding _positionStateBinding = new CompressedVec2Binding("position");
-
-        public SpriteMap sprite;
-        private HairDryer _hd;
-
-        public HotAir(float xpos, float ypos, HairDryer hd)
-            : base(xpos, ypos)
+        public Air(float x, float y) : base(x, y)
         {
-            sprite = new SpriteMap(GetPath("hotair"), 40, 20);
-            sprite.AddAnimation("*schwoo*", 0.5f, true, 0, 1, 2, 3);
-            sprite.SetAnimation("*schwoo*");
-            graphic = sprite;
-            center = new Vec2(20f, 10f);
-            depth = 0.3f;
-            _hd = hd;
-            visible = false;
+            graphic = new Sprite(GetPath("air"));
+
+            this.center = new Vec2(5f, 5f);
+            this.collisionOffset = new Vec2(5f, -5f);
+            this.collisionSize = new Vec2(1f, 10f);
+
+            _lifeTime = Rando.Float(0.15f, 0.25f);
+            gravMultiplier = -0.5f;
+            airFrictionMult = 0.1f;
+            _skipPlatforms = true;
+            _skipAutoPlatforms = true;
         }
 
         public override void Update()
         {
-            if (_hd == null || !_hd._on)
+            base.Update();
+
+            _lifeTime -= 0.01f;
+            if (_lifeTime < 0f)
             {
-                visible = false;
-                return;
-            }
-
-            visible = _hd._on;
-
-            offDir = _hd.offDir;
-            if (offDir < 0)
-                sprite.flipH = true;
-            else
-                sprite.flipH = false;
-
-            x = _hd.x + _hd.offDir * 28f;
-            y = _hd.y - 4f;
-
-            foreach (PhysicsObject physicsObject in Level.CheckRectAll<PhysicsObject>(position,
-                new Vec2(position.x + sprite.width, y + sprite.height)))
-            {
-                if ((Level.CheckLine<Block>(_hd.position, physicsObject.position, physicsObject) == null) &&
-                    physicsObject != _hd && physicsObject != _hd.owner)
-                {
-                    physicsObject.hSpeed += offDir * 2.5f * (float)Math.Pow((physicsObject.position - position).length, 1 / 3);
-                    if (physicsObject.weight <= 10f)
-                        physicsObject.vSpeed -= 0.3f / (float)Math.Sqrt(physicsObject.weight);
-                }
+                Remove();
             }
         }
+
+        public override void OnImpact(MaterialThing with, ImpactedFrom @from)
+        {
+            if (with.GetType() == typeof(Air) || with == this._owner)
+                return;
+
+            this.Fondle(with);
+            with.ApplyForce(new Vec2(_hSpeed * 0.4f, -1f));
+            Remove();
+        }
+
+        public void Remove()
+        {
+            _destroyed = true;
+            position = new Vec2(999999, 999999);
+            Level.Remove(this);
+        }
+
+        private float _lifeTime;
     }
 }

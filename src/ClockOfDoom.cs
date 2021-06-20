@@ -16,7 +16,7 @@
             collisionSize = new Vec2(23f, 23f);
             collisionOffset = new Vec2(-12.5f, -12.5f);
             _barrelOffsetTL = new Vec2(12.5f, 12.5f);
-            _holdOffset = new Vec2(10f, -6f);
+            _holdOffset = new Vec2(7f, 2f);
 
             ammo = 1;
             _fullAuto = true;
