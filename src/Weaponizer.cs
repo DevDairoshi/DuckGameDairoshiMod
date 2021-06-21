@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DuckGame;
 
 namespace DuckGame.DairoshiMod
 {
@@ -103,78 +102,6 @@ namespace DuckGame.DairoshiMod
             // nothing here
         }
 
-        public void CustomFire()
-        {
-            if (this.ammo > 0 && (double)this._wait == 0.0)
-            {
-                var contains = justGuns[Rando.Int(justGuns.Count - 1)];
-                var gun = (MaterialThing)Editor.CreateThing(contains);
-
-                gun.position = Offset(this._barrelOffsetTL);
-                gun.hSpeed = this.barrelVector.x * 5f;
-                gun.vSpeed = this.barrelVector.y * 3f - 1f;
-
-                int num = 0;
-                for (int index = 0; index < 14; ++index)
-                {
-                    MusketSmoke musketSmoke = new MusketSmoke(this.barrelPosition.x - 16f + Rando.Float(32f), this.barrelPosition.y + Rando.Float(32f));
-                    musketSmoke.depth = (Depth)(float)(0.899999976158142 + (double)index * (1.0 / 1000.0));
-                    if (num < 6)
-                        musketSmoke.move -= this.barrelVector * Rando.Float(0.1f);
-                    if (num > 5 && num < 10)
-                        musketSmoke.fly += this.barrelVector * (2f + Rando.Float(7.8f));
-                    Level.Add((Thing)musketSmoke);
-                    ++num;
-                }
-
-                Level.Add((Thing)gun);
-                this.Fondle((Thing)gun);
-                gun.clip.Add(this.owner as MaterialThing);
-
-                if (this.duck != null)
-                    RumbleManager.AddRumbleEvent(this.duck.profile, new RumbleEvent(this._fireRumble, RumbleDuration.Pulse, RumbleFalloff.None));
-                this.ApplyKick();
-
-                if (!this.receivingPress)
-                {
-                    if (Network.isActive && this.isServerForObject)
-                    {
-                        if (this.duck != null && this.duck.profile.connection != null)
-                            gun.connection = this.duck.profile.connection;
-                    }
-                }
-
-                this._smokeWait = 3f;
-                this.loaded = false;
-                this._flareAlpha = 1.5f;
-                if (!this._manualLoad)
-                    this.Reload(false);
-
-                this.firing = true;
-                this._wait = this._fireWait;
-
-                SFX.Play("campingThwoom", pitch: (Rando.Float(0.2f) - 0.1f + this._fireSoundPitch));
-                SFX.Play("missile", pitch: (Rando.Float(0.2f) - 0.1f + this._fireSoundPitch));
-                if (this.owner == null)
-                {
-                    Vec2 vec2 = this.barrelVector * Rando.Float(1f, 3f);
-                    vec2.y += Rando.Float(2f);
-                    this.hSpeed -= vec2.x;
-                    this.vSpeed -= vec2.y;
-                }
-            }
-
-            else
-            {
-                if (this.ammo > 0 || (double)this._wait != 0.0)
-                    return;
-                this.firedBullets.Clear();
-                this.DoAmmoClick();
-                this._wait = this._fireWait;
-            }
-        }
-
-
         public static List<System.Type> justGuns = ItemBox.GetPhysicsObjects(Editor.Placeables).FindAll((Predicate<System.Type>)(
             t => t.IsSubclassOf(typeof(Gun)) &&
                  t != typeof(Trumpet) &&
@@ -194,7 +121,11 @@ namespace DuckGame.DairoshiMod
                  t != typeof(RCController) &&
                  t != typeof(Saxaphone) &&
                  t != typeof(Trombone) &&
-                 t != typeof(Weaponizer)
+                 t != typeof(Weaponizer) &&
+                 t != typeof(BookOfTheFireGod) &&
+                 t != typeof(DemonicBook) &&
+                 t != typeof(BaseballBat) &&
+                 t != typeof(Canister)
         ));
     }
 }

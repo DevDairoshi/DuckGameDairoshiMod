@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DuckGame.DairoshiMod
+﻿namespace DuckGame.DairoshiMod
 {
     [EditorGroup("DairoshiMod|Misc")]
     public class HairDryer : Gun
@@ -49,6 +47,9 @@ namespace DuckGame.DairoshiMod
                 this.flammable = 0f;
                 this.burntOut = true;
                 _on = false;
+
+                collisionSize = new Vec2(21f, 16f);
+                collisionOffset = new Vec2(-10.5f, -7.5f);
             }
 
             base.Update();
