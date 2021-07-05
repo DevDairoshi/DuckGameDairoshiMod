@@ -10,7 +10,7 @@
 [assembly: AssemblyDescription("Just a weapon pack")]
 
 // The mod's version
-[assembly: AssemblyVersion("1.3.0.0")]
+[assembly: AssemblyVersion("1.3.0.2")]
 
 namespace DuckGame.DairoshiMod
 {

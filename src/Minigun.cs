@@ -1,7 +1,7 @@
 ﻿namespace DuckGame.DairoshiMod
 {
     [EditorGroup("DairoshiMod|Guns")]
-    public class Minigun : Chaingun
+    public class Minigun : Gun
     {
         public SpriteMap map;
         public Minigun(float xval, float yval) : base(xval, yval)
@@ -18,28 +18,30 @@
             _barrelOffsetTL = new Vec2(41f, 12f);
             _holdOffset = new Vec2(13f, 6f);
 
-            
             _fullAuto = true;
-            this._fireWait = 0.5f;
+            _fireWait = 0.5f;
             ammo = 100;
             _ammoType = (AmmoType)new AtMinigun();
             _type = "gun";
             _kickForce = 2f;
-            _weight = 9.5f;
+            _weight = 10f;
             _fireSound = GetPath("minigunShot");
             editorTooltip = "A little present from uncle Bob";
-        }
-
-        protected override void PlayFireSound()
-        {
-            SFX.Play(this._fireSound, 2f,(Rando.Float(0.2f) - 0.1f + this._fireSoundPitch) );
         }
 
         public override void Update()
         {
             base.Update();
-            _barrelHeat = 0f;
-            _fireWait = 0.5f;
+
+            if (duck != null)
+            {
+                SFX.Play(GetPath("minigunNoise"), 0.01f);
+            }
+        }
+
+        protected override void PlayFireSound()
+        {
+            SFX.Play(this._fireSound, 2f,(Rando.Float(0.2f) - 0.1f + this._fireSoundPitch) );
         }
 
         public override void Fire()

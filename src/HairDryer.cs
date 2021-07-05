@@ -122,7 +122,7 @@
             this.Fondle(air);
 
             air.hSpeed = barrelVector.x * _power * 8f + Rando.Float(-3f, 3f) * _power;
-            air.vSpeed = barrelVector.y * _power * 8f + Rando.Float(-3f, 3f) * _power;
+            air.vSpeed = barrelVector.y * _power * 8f + Rando.Float(-1f, 3f) * _power;
         }
 
         protected override bool OnBurn(Vec2 firePosition, Thing litBy)
@@ -207,6 +207,7 @@
             airFrictionMult = 0.1f;
             _skipPlatforms = true;
             _skipAutoPlatforms = true;
+            _dontCrush = true;
         }
 
         public override void Update()
