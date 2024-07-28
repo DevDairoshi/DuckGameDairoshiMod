@@ -55,6 +55,34 @@ namespace DuckGame.DairoshiMod
 
         public override void OnPressAction()
         {
+            if (justGuns == null)
+            {
+                justGuns = ItemBox.GetPhysicsObjects(Editor.Placeables).FindAll((Predicate<System.Type>)(
+                    t => t.IsSubclassOf(typeof(Gun)) &&
+                         t != typeof(Trumpet) &&
+                         t != typeof(Banana) &&
+                         t != typeof(BananaCluster) &&
+                         t != typeof(Grenade) &&
+                         t != typeof(FireExtinguisher) &&
+                         t != typeof(FireCrackers) &&
+                         t != typeof(RomanCandle) &&
+                         t != typeof(Chainsaw) &&
+                         t != typeof(EnergyScimitar) &&
+                         t != typeof(SledgeHammer) &&
+                         t != typeof(Sword) &&
+                         t != typeof(Keytar) &&
+                         t != typeof(GoodBook) &&
+                         t != typeof(RCCar) &&
+                         t != typeof(RCController) &&
+                         t != typeof(Saxaphone) &&
+                         t != typeof(Trombone) &&
+                         t != typeof(Weaponizer) &&
+                         t != typeof(BookOfTheFireGod) &&
+                         t != typeof(DemonicBook) &&
+                         t != typeof(BaseballBat) &&
+                         t != typeof(Canister)
+                ));
+            }
             if (this.ammo > 0)
             {
                 --this.ammo;
@@ -103,30 +131,6 @@ namespace DuckGame.DairoshiMod
             // nothing here
         }
 
-        public static List<System.Type> justGuns = ItemBox.GetPhysicsObjects(Editor.Placeables).FindAll((Predicate<System.Type>)(
-            t => t.IsSubclassOf(typeof(Gun)) &&
-                 t != typeof(Trumpet) &&
-                 t != typeof(Banana) &&
-                 t != typeof(BananaCluster) &&
-                 t != typeof(Grenade) &&
-                 t != typeof(FireExtinguisher) &&
-                 t != typeof(FireCrackers) &&
-                 t != typeof(RomanCandle) &&
-                 t != typeof(Chainsaw) &&
-                 t != typeof(EnergyScimitar) &&
-                 t != typeof(SledgeHammer) &&
-                 t != typeof(Sword) &&
-                 t != typeof(Keytar) &&
-                 t != typeof(GoodBook) &&
-                 t != typeof(RCCar) &&
-                 t != typeof(RCController) &&
-                 t != typeof(Saxaphone) &&
-                 t != typeof(Trombone) &&
-                 t != typeof(Weaponizer) &&
-                 t != typeof(BookOfTheFireGod) &&
-                 t != typeof(DemonicBook) &&
-                 t != typeof(BaseballBat) &&
-                 t != typeof(Canister)
-        ));
+        public static List<System.Type> justGuns = null;
     }
 }
