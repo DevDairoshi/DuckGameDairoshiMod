@@ -58,6 +58,7 @@ namespace DuckGame.DairoshiMod
             if (this.ammo > 0)
             {
                 --this.ammo;
+                _wait = _fireWait;
                 if (this.duck != null)
                     RumbleManager.AddRumbleEvent(this.duck.profile, new RumbleEvent(this._fireRumble, RumbleDuration.Pulse, RumbleFalloff.None));
                 SFX.Play("campingThwoom", pitch: (Rando.Float(0.2f) - 0.1f + this._fireSoundPitch));

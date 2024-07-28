@@ -17,12 +17,12 @@ namespace DuckGame.DairoshiMod
             this._holdOffset = new Vec2(-1f, -11f);
 
             wideBarrel = true;
-            _fireWait = 2f;
             ammo = 10;
             _weight = 8f;
             _type = "gun";
             _ammoType = (AmmoType)new AT9mm();
             _kickForce = 5f;
+            _fireWait = 0.8f;
             _fireSound = "shotgunFire2";
             _bulletColor = Color.White;
             editorTooltip = "Chill bro";
@@ -56,6 +56,7 @@ namespace DuckGame.DairoshiMod
             if (this.ammo > 0)
             {
                 --this.ammo;
+                _wait = _fireWait;
                 if (this.duck != null)
                     RumbleManager.AddRumbleEvent(this.duck.profile, new RumbleEvent(this._fireRumble, RumbleDuration.Pulse, RumbleFalloff.None));
                 SFX.Play("campingThwoom", pitch: (Rando.Float(0.2f) - 0.1f + this._fireSoundPitch));

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DairoshiMod</RootNamespace>
     <AssemblyName>DairoshiMod</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>.\</OutputPath>
@@ -31,6 +33,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DuckGame">
@@ -57,6 +60,7 @@
     <Compile Include="src\Blowgun.cs" />
     <Compile Include="src\BookOfTheFireGod.cs" />
     <Compile Include="src\Bouncer.cs" />
+    <Compile Include="src\BulkerGun.cs" />
     <Compile Include="src\CampingGrenade.cs" />
     <Compile Include="src\Canister.cs" />
     <Compile Include="src\ClockOfDoom.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="src\DemonicBook.cs" />
     <Compile Include="src\DesertEagle.cs" />
     <Compile Include="src\Destroyer.cs" />
+    <Compile Include="src\DroneLauncher.cs" />
     <Compile Include="src\EvilEye.cs" />
     <Compile Include="src\Famas.cs" />
     <Compile Include="src\FNP90PDW.cs" />

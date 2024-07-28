@@ -19,7 +19,6 @@ namespace DuckGame.DairoshiMod
             wideBarrel = true;
             _kickForce = 2f;
             ammo = 30;
-            _fireWait = 1f;
             _type = "gun";
             _ammoType = (AmmoType) new ATDefault();
             _fireSound = "shotgunFire2";

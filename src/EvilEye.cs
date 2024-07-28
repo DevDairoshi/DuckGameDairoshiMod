@@ -121,6 +121,18 @@ namespace DuckGame.DairoshiMod
                 (with as Door).Destroy(new DTCrush(this));
             }
 
+            //if (with.GetType().IsSubclassOf(typeof(Block)) || with is Block)
+            //{
+            //    if (from == ImpactedFrom.Left || from == ImpactedFrom.Right)
+            //    {
+            //        this._hSpeed *= -1;
+            //    }
+            //    if (from == ImpactedFrom.Top || from == ImpactedFrom.Bottom)
+            //    {
+            //        this._vSpeed *= -1;
+            //    }
+            //}
+
             base.OnImpact(with, @from);
         }
     }
